@@ -1,0 +1,44 @@
+<html>
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'notes/style.css' %}" />
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static 'notes/scripting.js' %}" ></script>
+
+<body>
+	<!-- header -->
+	<div style="height:200px;background-color:#1E90FF;">
+		<div style="align:center;width:950px;height:80%;margin: 0 auto ;" id="header">
+			<a href="http://127.0.0.1:8000/notes/project-list" class="plain"><h1 style="font-family:'Lato';font-size:60px;">Note Thing</h1></a>
+			<div style="background-color:#1E90FF;align:center;width:100%;height:20%;margin: 0 auto ;">				
+				<h2 style="font-family:Lato;color:#FFFFFF"><a class="plain" style="color:#FFFFFF;" href="http://127.0.0.1:8000/notes/{{note.project.pk}}/note-list">{{note.project.name}}:</a></h2>
+			</div>
+		</div>
+	</div>
+	<!-- end header -->
+	<!-- content -->
+	<div style="width:950px;align:center;margin: 0 auto;">
+		<!-- edit box -->
+		<div style="width:100%;height:500px;float:left;padding:20px;">
+			<form action="{% url 'notes:edit-note' note.pk %}" method="post">{% csrf_token %}
+				<input class="btn-style" type="submit" value="Save">
+				<a href="{% url 'notes:view-note' note.pk %}">view</a>
+				<br>
+				<input type="hidden" value="{{ note.pk }}" name="pk">
+				<textarea rows="20" name="noteEdits">{{ note.content }}</textarea>
+				<br>
+				<input class="btn-style" type="submit" value="Save">
+			</form>
+			<br>
+		</div>
+		<!-- end edit box -->
+		<!-- note preview -->
+		<div style="width:100%;float:down;overflow:hidden;padding:0px">
+			<h1>{{note.title}}</h1>
+			{{ content|safe }}
+		</div>
+		<!-- end preview -->
+	</div>
+	<!-- end content -->
+</html>

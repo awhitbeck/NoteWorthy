@@ -1,0 +1,28 @@
+<html>
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'notes/style.css' %}" />
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static 'notes/scripting.js' %}" ></script>
+
+<body>
+	<div style="height:200px;background-color:#1E90FF;">
+		<div style="align:center;width:950px;height:80%;margin: 0 auto ;" id="header">
+			<a href="http://127.0.0.1:8000/notes/project-list" class="plain"><h1 style="font-family:'Lato';font-size:60px;">Note Thing</h1></a>
+			<div style="background-color:#1E90FF;align:center;width:100%;height:20%;margin: 0 auto ;">				
+				<h2 style="font-family:Lato;color:#FFFFFF"><a class="plain" style="color:#FFFFFF;" href="http://127.0.0.1:8000/notes/{{note.project.pk}}/note-list">{{note.project.name}}:</a></h2>
+			</div>
+		</div>
+	</div>
+	<div style="align:center;width:900px;margin: 0 auto ;">
+		<div style="align:center;width:100%;height:100;margin: 0 auto ;">
+
+		<br>
+		<h1>{{note.title}}</h1> 
+		<a href="{% url 'notes:edit-note' note.pk %}">edit</a>
+		{{ content|safe }}
+
+	</div>
+
+</html>

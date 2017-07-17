@@ -1,0 +1,63 @@
+<html>
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'notes/style.css' %}" />
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static 'notes/scripting.js' %}" ></script>
+
+<body>
+		<!-- header -->
+		<div style="height:200px;background-color:#1E90FF;">
+			<div style="align:center;width:950px;height:80%;margin: 0 auto ;" id="header">
+				<!-- <a href="http://127.0.0.1:8000/notes/project-list" class="plain"><h1 style="font-family:'Lato';font-size:60px;">Note Thing</h1></a> -->
+				<a href="{%url 'notes:project-list'%}" class="plain"><h1 style="font-family:'Lato';font-size:60px;">Note Thing</h1></a>
+				<div style="background-color:#1E90FF;align:center;width:100%;height:20%;margin: 0 auto ;">				
+					<h2 style="font-family:Lato;color:#FFFFFF">Projects:</h2>
+				</div>
+			</div>
+		</div>
+		<!-- end header -->
+		<!-- content -->
+		<div style="align:center;width:900px;margin: 0 auto ;">
+			<br>
+
+			<!-- new project button -->			
+			<div style="align:center;width:100%;height:100;margin: 0 auto ;">
+				<form action="{% url 'notes:new-project' %}" method="post">{% csrf_token %}	
+					<input class="btn-style" type="submit" value="New Project"/>
+				</form>	
+			</div>
+			<!-- end new project button -->
+			<!-- project list -->
+			{% for project in projects %}
+				<!-- project item -->
+		    	<div class="project" style="width:45%;float:left">
+	    			<a class="project" href="{% url 'notes:note-list' project.0.pk %}">
+    					<h2>{{ project.0.name }}</h2>
+    				</a>
+				<!--To do list:
+				formatting has been fully taken care of in the view function. 
+				This turned out to be much easier than traversing a tree in the template. 
+				However, there is a way to do this, I think, in Django using 'inclusion tags'. -->
+				<!-- <div style="align:center;width=100%;border-radius:5px;padding-left:5; padding-bottom:1; padding-top:1; margin:0 auto;background-color:#EFEFEF;"> -->
+					<h2>To do:</h2>
+					<form action="{% url 'notes:new-task' %}" method="post" >{% csrf_token %}	
+						<input class="btn-style" type="submit" value="New Task"/>
+					</form>
+					<form action="{% url 'notes:update-todo' %}" method="post">{% csrf_token %}
+						{{project.1|safe}}
+						<input type="hidden" value="{{project.0.pk}}" name="project_pk">
+						<input class="btn-style" type="submit" value="Update"/>
+					</form>
+				</div>
+				<!-- end to do list -->
+				<!-- end project item -->
+			{% endfor %}
+			<!-- end project list -->
+		</div>
+		<!-- end content -->
+</body>
+
+</html>
+

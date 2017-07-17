@@ -1,0 +1,27 @@
+<html>
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'notes/style.css' %}" />
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<script type="text/javascript" src="{% static 'notes/scripting.js' %}" ></script>
+
+<body onload="addHeader()">
+<div style="height:150px;background-color:#58ACFA;">
+	<div style="align:center;width:950px;height:100%;margin: 0 auto ;" id="header"></div>
+</div>
+<div style="align:center;width:900px;margin: 0 auto;">
+	<div style="align:center;width:100%;height:100;margin: 0 auto ;">
+
+		<h2>New Project:</h2>
+		<form action="{% url 'notes:new-project' %}" method="post">{% csrf_token %}	
+			Project Name:<input type="text" name="projectName"></input>
+			<input type="submit" value="Create"/>
+		</form>
+
+	</div>
+
+</div>
+</body>
+
+</html>

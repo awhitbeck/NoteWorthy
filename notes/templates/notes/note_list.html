@@ -1,0 +1,64 @@
+<html>
+
+	{% load staticfiles %}
+
+	<link rel="stylesheet" type="text/css" href="{% static 'notes/style.css' %}" />
+	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="{% static 'notes/scripting.js' %}" ></script>
+
+	<body>
+		<!-- header -->
+		<div style="height:200px;background-color:#1E90FF;">
+			<div style="align:center;width:950px;height:80%;margin: 0 auto ;" id="header">
+				<a href="http://127.0.0.1:8000/notes/project-list" class="plain"><h1 style="font-family:'Lato';font-size:60px;">Note Thing</h1></a>
+				<div style="background-color:#1E90FF;align:center;width:100%;height:20%;margin: 0 auto ;">				
+					<h2 style="font-family:Lato;color:#FFFFFF"><a class="plain" style="color:#FFFFFF;" href="http://127.0.0.1:8000/notes/{{notes.0.project.pk}}/note-list">{{notes.0.project.name}}:</a></h2>
+				</div>
+			</div>
+		</div>
+		<!-- end header -->
+		<!-- content -->
+		<div style="align:center;width:900px;margin: 0 auto ;">			
+				<!-- this just a spacer	 -->
+				<div style="align:center;width:100%;height:50;margin: 0 auto ;"></div>
+				
+				<!--To do list:
+				formatting has been fully taken care of in the view function. 
+				This turned out to be much easier than traversing a tree in the template. 
+				However, there is a way to do this, I think, in Django using 'inclusion tags'. -->
+				<div style="align:center;width=100%;border-radius:5px;padding-left:5; padding-bottom:1; padding-top:1; margin:0 auto;background-color:#EFEFEF;">
+					<h2>To do:</h2>
+					<form action="{% url 'notes:new-task' %}" method="post" >{% csrf_token %}	
+						<input class="btn-style" type="submit" value="New Task"/>
+					</form>
+					<form action="{% url 'notes:update-todo' %}" method="post">{% csrf_token %}
+						<input type="hidden" value="{{project_pk}}" name="project_pk">
+						{{taskTree|safe}}
+						<input class="btn-style" type="submit" value="Update"/>
+					</form>
+				</div>
+				<!-- end to do list -->
+
+				<br>
+
+				<!-- submit button for new note -->
+				<form action="{% url 'notes:new-note' project_pk %}" method="post">{% csrf_token %}	
+					<input class="btn-style" type="submit" value="New Note"/>
+				</form>	
+
+				<!-- note list -->
+				{% for note in notes %}
+					{% if note.complete %}
+						<div class="project" style="background-color:#1E90FF;color:#FFFFFF">
+					{% else %}
+						<div class="project">
+					{% endif %}
+						<b>{{ note }}&nbsp - &nbsp </b>&nbsp&nbsp<a class="project" href="{% url 'notes:edit-note' note.pk %}">edit</a>&nbsp&nbsp<a class="project" href="{% url 'notes:view-note' note.pk %}">view</a>
+						</div>
+					<!-- <br style="line-height:0px;"> -->
+				{% endfor %}
+				<!-- end note list -->
+		</div>
+		<!-- end content -->
+	</body>
+</html>

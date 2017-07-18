@@ -26,18 +26,8 @@ class Note(models.Model):
     def __str__(self):
         return self.title
 
-# class ToDoList(models.Model):
-
-#     listName = models.CharField(max_length=100,null=True)
-#     project = models.ForeignKey(Project,on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.listName
-
-
 class ToDoTask(models.Model):
 
-    # parentList = models.ForeignKey(ToDoList,on_delete=models.CASCADE,null=True)    
     parentTask = models.ForeignKey('self',blank=True,null=True)
     project = models.ForeignKey(Project,on_delete=models.CASCADE,blank=True,null=True)
 
